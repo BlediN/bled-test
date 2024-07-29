@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing Footer API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        main section {
+            margin-bottom: 20px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hi. I am Bledar. This is a test page</h1>
+    </header>
+
+    <main>
+        <section id="home">
+            <h2>Testing Footer API</h2>
+            
+        </section>
+    </main>
+
+
+
+
+
+
+    <footer id="footer-content">
+        <!-- Footer content will be inserted here dynamically -->
+    </footer>
+
+    <script>
+        // Function to fetch footer content from the API and store it in local storage
+        function fetchAndStoreFooterContent() {
+            // fetch('http://localhost:5000/api/parse')
+            fetch('http://74.88.133.88:5000/api/parse')
+                .then(response => response.json())
+                .then(data => {
+                    // Extract footer content from API response
+                    const footerContent = data.footer;
+
+                    // Store footer content in local storage
+                    localStorage.setItem('footerContent', footerContent);
+
+                    // Display footer content on the webpage
+                    document.getElementById('footer-content').innerHTML = footerContent;
+                })
+                .catch(error => console.error('Error fetching footer content:', error));
+        }
+
+        // Function to display footer content from local storage
+        function displayStoredFooterContent() {
+            const storedFooterContent = localStorage.getItem('footerContent');
+            if (storedFooterContent) {
+                document.getElementById('footer-content').innerHTML = storedFooterContent;
+            }
+        }
+
+        // Call the function to fetch and store footer content when the page loads
+        fetchAndStoreFooterContent();
+
+        // Call the function to display footer content from local storage when the page loads
+        displayStoredFooterContent();
+    </script>
+
+
+
+</body>
+</html>
