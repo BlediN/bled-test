@@ -11,8 +11,26 @@
             padding: 0;
         }
 
+        @keyframes colorChange {
+            0% {
+                background-color: #4CAF50; /* Green */
+            }
+            25% {
+                background-color: #FF5733; /* Orange */
+            }
+            50% {
+                background-color: #3498DB; /* Blue */
+            }
+            75% {
+                background-color: #9B59B6; /* Purple */
+            }
+            100% {
+                background-color: #4CAF50; /* Green */
+            }
+        }
+
         header {
-            background-color: #4CAF50;
+            animation: colorChange 10s infinite;
             color: white;
             padding: 1rem;
             text-align: center;
@@ -46,7 +64,7 @@
 </head>
 <body>
     <header>
-        <h1>Hi. I am Bledar. This is my GIT test page</h1>
+        <h2>Hi. I am Bledar. This is my GIT test page</h2>
     </header>
 
     <main>
