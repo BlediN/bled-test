@@ -86,7 +86,7 @@
     <script>
         // Function to fetch footer content from the API and display it directly
         function fetchAndDisplayFooterContent() {
-            fetch('https://footer-alb-108366773.us-east-1.elb.amazonaws.com/footer')
+            fetch('http://footer-alb-108366773.us-east-1.elb.amazonaws.com/footer')
                 .then(response => response.json())
                 .then(data => {
                     // Extract footer content from API response
