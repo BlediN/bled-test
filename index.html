@@ -75,34 +75,92 @@
     </main>
 
 
+    <footer>
+        <div id="footer-content" style="all: unset;"></div>
+        <script>
+            function fetchAndDisplayFooterContent() {
+                const cachedFooter = localStorage.getItem('footer-content');
+                console.log("0 - cachedFooter: ", cachedFooter);
 
+                const lastCachedtime = localStorage.getItem('footer-last-fetched');
+                console.log("01 - lastCached: ", lastCachedtime);
 
+                if (cachedFooter && lastCachedtime) {
+                    const lastCached = new Date(lastCachedtime);
+                    console.log("1 - lastCached: ", lastCached);
 
+                    // Calculate the last occurrence of 1am
+                    const apiTime = new Date();
+                    apiTime.setHours(1, 0, 0, 0);
+                    //   const lastAPITime = apiTime.toISOString();
+                    console.log("2 - Set API time: ", apiTime);
 
-    <footer id="footer-content">
-        <!-- Footer content will be inserted here dynamically -->
-    </footer>
+                    if (new Date().toISOString() <= apiTime.toISOString()) {
+                        // lastAPITime.setDate(lastAPITime.getDate() - 1);
+                        // const lastAPITime2 = new Date(lastAPITime);
+                        apiTime.setDate(apiTime.getDate() - 1);
+                        console.log("3.1 - Last occurrence of API: ", apiTime);
+                        // const newlastAPITime = lastAPITime2.toISOString();
+                        // console.log("4 - lastAPITime: ", newlastAPITime);
+                    }
+                    console.log("3.2 - Last occurrence of API: ", apiTime);
 
-    <script>
-        // Function to fetch footer content from the API and display it directly
-        function fetchAndDisplayFooterContent() {
-            fetch('https://footer-alb-108366773.us-east-1.elb.amazonaws.com/footer')
-                .then(response => response.json())
-                .then(data => {
-                    // Extract footer content from API response
-                    const footerContent = data.footer;
+                    // If the local cache is older than the scheduled API update time, fetch new data
+                    if (lastCached.toISOString() <= apiTime.toISOString()) {
+                        updateFooterFromAPI(); // Cache is outdated, update it
+                        console.log("4 - Cache is outdated, update it from API");
+                    } else {
+                        // Cache is still valid, display it
+                        document.getElementById('footer-content').innerHTML = cachedFooter;
+                        console.log("5 - Cache is still valid, display it");
+                    }
+                } else {
+                    // No cache exists, so fetch from the API and cache the data
+                    updateFooterFromAPI();
+                    console.log("6 - Cache is invalid. Update and set cache from API");
+                }
+            }
 
-                    // Display footer content on the webpage
-                    document.getElementById('footer-content').innerHTML = footerContent;
-                })
-                .catch(error => console.error('Error fetching footer content:', error));
-        }
+            function updateFooterFromAPI() {
+                fetch('https://footer-alb-108366773.us-east-1.elb.amazonaws.com/footer')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Extract footer content from API response
+                        const footerContent = data.footer;
+                        console.log("7 - footerContent: ", footerContent);
 
-        // Call the function to fetch and display footer content when the page loads
-        fetchAndDisplayFooterContent();
-    </script>
+                        // Display the content on the webpage
+                        document.getElementById('footer-content').innerHTML = footerContent;
+                        console.log("8 - Display data from API");
 
+                        // Cache the footer content and the current timestamp
+                        localStorage.setItem('footer-content', footerContent);
+                        localStorage.setItem('footer-last-fetched', new Date());
+                        console.log("9 - Update timestamp for the new cache: ", localStorage.getItem('footer-last-fetched'));
+                    })
+                    .catch(error => {
+                        console.error('10 - Error fetching footer content:', error);
 
+                        // If API fails and there's no cached content, display fallback content
+                        const fallbackContent = `
+                <div class="item">
+                  <span class="place"><strong>9/11 Memorial</strong></span>
+                  <time>Daily, 9 a.m. - 8 p.m.</time>
+                </div>
+                <div class="item">
+                  <span class="place"><strong>9/11 Museum</strong></span>
+                  <time>Weds - Mon, 10 a.m. - 5 p.m.</time>
+                </div>
+                      `;
+                        document.getElementById('footer-content').innerHTML = fallbackContent;
+                        console.log("11 - If API fails and there's no cached content, display fallback content");
+                    });
+            }
+
+            // Call the function to fetch and display footer content when the page loads
+            fetchAndDisplayFooterContent();
+        </script>
+        </footer>
 
 </body>
 </html>
