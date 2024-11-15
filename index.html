@@ -143,14 +143,15 @@
 
                         // If API fails and there's no cached content, display fallback content
                         const fallbackContent = `
-                <div class="item">
-                  <span class="place"><strong>9/11 Memorial</strong></span>
-                  <time>Daily, 9 a.m. - 8 p.m.</time>
-                </div>
-                <div class="item">
-                  <span class="place"><strong>9/11 Museum</strong></span>
-                  <time>Weds - Mon, 10 a.m. - 5 p.m.</time>
-                </div>
+                            <div class="item" style="white-space: nowrap;">
+                                <span class="place"><strong>9/11 Memorial</strong></span>
+                                <p>Daily, 9 a.m. - 8 p.m.</p>
+                            </div>
+                            <div class="item" style="white-space: nowrap;">
+                                <span class="place"><strong>9/11 Museum</strong></span>
+                                <p>Weds-Mon &amp; <a href="https://www.911memorial.org/special-hours" target="_blank">
+                                    <strong>select Tues</strong></a>, 9 a.m.-7 p.m.</p>
+                            </div>
                       `;
                         document.getElementById('footer-content').innerHTML = fallbackContent;
                         console.log("11 - If API fails and there's no cached content, display fallback content");
